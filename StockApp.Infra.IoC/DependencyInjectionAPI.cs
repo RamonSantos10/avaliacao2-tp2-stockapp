@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StockApp.Application.Interfaces;
+using StockApp.Application.Interfaces.Services;
 using StockApp.Application.Mappings;
 using StockApp.Application.Services;
 using StockApp.Domain.Interfaces;
@@ -25,7 +26,7 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
-
+            services.AddScoped<IAlertService, AlertService>();
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
