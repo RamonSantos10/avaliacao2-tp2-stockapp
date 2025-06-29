@@ -1,13 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using StockApp.Infra.IoC;
-using DotNetEnv; 
+using DotNetEnv;
 using StockApp.Infra.Data.Context;
 using System;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Repositories;
 using StockApp.Application.Services;
 using Microsoft.AspNetCore.Builder;
-
 
 
 DotNetEnv.Env.Load();
@@ -20,13 +19,11 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' n„o foi encontrada. Verifique appsettings.json ou .env.");
-    throw new InvalidOperationException("ConnectionString 'DefaultConnection' n„o configurada.");
+    Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' n√£o foi encontrada. Verifique appsettings.json ou .env.");
+    throw new InvalidOperationException("ConnectionString 'DefaultConnection' n√£o configurada.");
 }
 
-
 builder.Services.AddInfrastructureAPI(builder.Configuration);
-
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -35,7 +32,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();

@@ -397,5 +397,6 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-# Custom ignore for .env file
-.env
+# Variáveis de ambiente
+.env  
+
