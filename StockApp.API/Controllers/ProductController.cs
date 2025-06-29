@@ -3,7 +3,7 @@ using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]")] 
 public class ProductController : ControllerBase
 {
     private readonly IProductService _service;
@@ -15,7 +15,7 @@ public class ProductController : ControllerBase
 
     [HttpGet("search")]
     public async Task<IActionResult> SearchProducts(
-        [FromQuery] string name,
+        [FromQuery] string? name, 
         [FromQuery] decimal? minPrice,
         [FromQuery] decimal? maxPrice)
     {
