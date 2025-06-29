@@ -1,12 +1,18 @@
 using StockApp.Infra.IoC;
+using DotNetEnv; // Adicione este using para o DotNetEnv
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        
+        Env.Load(); 
+
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+       
+        builder.Configuration.AddEnvironmentVariables();
+
         builder.Services.AddInfrastructureAPI(builder.Configuration);
 
         builder.Services.AddControllers();
@@ -16,7 +22,7 @@ internal class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
