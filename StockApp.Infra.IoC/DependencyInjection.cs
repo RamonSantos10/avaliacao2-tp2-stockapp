@@ -36,6 +36,11 @@ namespace StockApp.Infra.IoC
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+            services.AddScoped<IFeedbackRepository, InMemoryFeedbackRepository>();
+
+
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
             services.AddMediatR(myhandlers);
 

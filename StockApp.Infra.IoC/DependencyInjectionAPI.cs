@@ -1,8 +1,9 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StockApp.Application.Interfaces;
+using StockApp.Application.Interfaces.Services;
 using StockApp.Application.Mappings;
 using StockApp.Application.Services;
 using StockApp.Domain.Interfaces;
@@ -24,8 +25,11 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IDiscountService, DiscountService>(); 
+            services.AddScoped<IDiscountService, DiscountService>();
 
+            // Adicionado de outras tarefas ou branches, garantindo que estejam presentes
+            services.AddScoped<IAlertService, AlertService>();
+            services.AddScoped<IJustInTimeInventoryService, JustInTimeInventoryService>();
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");

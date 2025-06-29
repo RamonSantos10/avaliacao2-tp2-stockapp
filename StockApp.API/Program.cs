@@ -1,16 +1,21 @@
+using Microsoft.EntityFrameworkCore;
 using StockApp.Infra.IoC;
-using DotNetEnv; // Adicione este using para o DotNetEnv
+using DotNetEnv;
+using StockApp.Infra.Data.Context;
+using System;
+using StockApp.Domain.Interfaces;
+using StockApp.Infra.Data.Repositories;
+using StockApp.Application.Services;
+
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        
-        Env.Load(); 
+        Env.Load();
 
         var builder = WebApplication.CreateBuilder(args);
 
-       
         builder.Configuration.AddEnvironmentVariables();
 
         builder.Services.AddInfrastructureAPI(builder.Configuration);
@@ -19,10 +24,13 @@ internal class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+        builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+        builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+
 
         var app = builder.Build();
 
-        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -38,3 +46,11 @@ internal class Program
         app.Run();
     }
 }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
