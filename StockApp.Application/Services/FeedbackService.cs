@@ -21,10 +21,11 @@ namespace StockApp.Application.Services
             var feedback = new Feedback
             {
                 UserId = userId,
-                Message = feedbackMessage,
+                FeedbackText = feedbackMessage,
                 Sentiment = sentiment
             };
 
+            
             await _feedbackRepository.SaveAsync(feedback);
         }
     }

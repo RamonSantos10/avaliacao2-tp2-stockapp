@@ -4,7 +4,7 @@ using StockApp.Domain.Interfaces;
 namespace StockApp.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller")]
+    [Route("api/[controller]")]
     public class FeedbackController : ControllerBase
     {
         private readonly IFeedbackService _feedbackService;
@@ -26,4 +26,5 @@ namespace StockApp.API.Controllers
         public string UserId { get; set; }
         public string Message { get; set; }
     }
+
 }

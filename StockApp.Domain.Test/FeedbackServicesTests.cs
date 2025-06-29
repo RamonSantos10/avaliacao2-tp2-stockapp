@@ -24,7 +24,7 @@ namespace StockApp.Domain.Test
             // Assert
             repo.Verify(r => r.SaveAsync(It.Is<Feedback>(f =>
                 f.UserId == "user123" &&
-                f.Message == "Muito bom" &&
+                f.FeedbackText == "Muito bom" &&
                 f.Sentiment == "Positivo"
             )), Times.Once);
         }

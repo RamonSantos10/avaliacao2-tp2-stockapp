@@ -4,7 +4,7 @@ namespace StockApp.Application.Services
 {
     public class SentimentAnalysisService : ISentimentAnalysisService
     {
-        public string AnalizeSentiment (string text)
+        public string AnalyzeSentiment (string text)
         {
             var lower = text.ToLower();
 
@@ -15,11 +15,6 @@ namespace StockApp.Application.Services
                 return "Negativo";
 
             return "Neutro";
-        }
-
-        string ISentimentAnalysisService.AnalyzeSentiment(string text)
-        {
-            throw new NotImplementedException();
         }
     }
 }
