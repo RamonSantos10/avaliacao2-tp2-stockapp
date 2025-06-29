@@ -54,7 +54,7 @@ namespace StockApp.Application.Services
         public async Task<IEnumerable<ProductDTO>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice)
         {
             var products = await _productRepository.SearchAsync(name, minPrice, maxPrice);
-            return _mapper.Map<IEnumerable<ProductDTO>>(products); 
+            return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
 
     }
