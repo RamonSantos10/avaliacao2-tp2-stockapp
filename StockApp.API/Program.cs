@@ -1,9 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using StockApp.Infra.IoC;
+using StockApp.Infra.Data.Context;
+using System;
+using StockApp.Domain.Interfaces;
+using StockApp.Infra.Data.Repositories;
+using StockApp.Application.Services;
 
-internal class Program
-{
-    private static void Main(string[] args)
-    {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -13,6 +15,14 @@ internal class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+        builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+        builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
         var app = builder.Build();
 
@@ -30,5 +40,3 @@ internal class Program
         app.MapControllers();
 
         app.Run();
-    }
-}
