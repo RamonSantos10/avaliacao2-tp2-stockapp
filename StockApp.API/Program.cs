@@ -6,51 +6,49 @@ using System;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Repositories;
 using StockApp.Application.Services;
+using Microsoft.AspNetCore.Builder;
 
 
-internal class Program
+DotNetEnv.Env.Load();
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables();
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrEmpty(connectionString))
 {
-    private static void Main(string[] args)
-    {
-        Env.Load();
-
-        var builder = WebApplication.CreateBuilder(args);
-
-        builder.Configuration.AddEnvironmentVariables();
-
-        builder.Services.AddInfrastructureAPI(builder.Configuration);
-
-        builder.Services.AddControllers();
-
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-        builder.Services.AddScoped<IFeedbackService, FeedbackService>();
-        builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
-
-
-        var app = builder.Build();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
-    }
+    Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' não foi encontrada. Verifique appsettings.json ou .env.");
+    throw new InvalidOperationException("ConnectionString 'DefaultConnection' não configurada.");
 }
 
-        app.UseHttpsRedirection();
+builder.Services.AddInfrastructureAPI(builder.Configuration);
 
-        app.UseAuthorization();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
-        app.MapControllers();
+builder.Services.AddControllers();
 
-        app.Run();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
