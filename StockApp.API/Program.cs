@@ -7,6 +7,8 @@ using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Repositories;
 using StockApp.Application.Services;
 using Microsoft.AspNetCore.Builder;
+using StockApp.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.Load();
 
@@ -26,6 +28,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 builder.Services.AddControllers();
@@ -59,3 +63,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Torna a classe Program acessível para testes de integração
+public partial class Program { }
