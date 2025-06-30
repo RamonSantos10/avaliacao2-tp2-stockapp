@@ -19,7 +19,7 @@ namespace StockApp.Application.Services
         public async Task OptimizeInventoryAsync()
         { 
 
-            IEnumerable<Product> products = await _productRepository.GetProducts();
+            IEnumerable<Product> products = await _productRepository.GetProductsAsync();
 
             foreach (var product in products)
             {

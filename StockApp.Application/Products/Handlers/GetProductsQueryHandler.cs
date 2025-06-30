@@ -23,7 +23,7 @@ namespace StockApp.Application.Products.Handlers
         public async Task<IEnumerable<Product>> Handle(GetProductsQuery resquest,
             CancellationToken cancellationToken)
         {
-            return await _productRepository.GetProducts();
+            return await _productRepository.GetProductsAsync();
         }
     }
 }

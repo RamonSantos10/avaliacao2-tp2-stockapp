@@ -9,7 +9,7 @@ namespace StockApp.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDTO>> GetProducts();
+        Task<IEnumerable<ProductDTO>> GetProductsAsync();
         Task<ProductDTO> GetProductById(int? id);
         Task Add(ProductDTO productDto);
         Task Update(ProductDTO productDto);
