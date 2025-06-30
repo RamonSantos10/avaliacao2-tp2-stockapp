@@ -94,5 +94,33 @@ namespace StockApp.Domain.Test
             Assert.NotNull(result);
             Assert.Empty(result);
         }
+        [Fact]
+        public async Task GetLowStockAsync_Returns_Products_With_Stock_Less_Or_Equal_Threshold()
+        {
+            var threshold = 10;
+            var products = new List<Product>
+            {
+                new Product(1, "Produto1", "descrição", 10.0m, 5, "img"),
+                new Product(2, "Produto2", "descrição", 20.0m, 10, "img"),
+                new Product(3, "Produto3", "descrição", 30.0m, 15, "img") 
+            };
+
+            var mockRepo = new Mock<IProductRepository>();
+            mockRepo.Setup(r => r.GetLowStockAsync(threshold))
+                .ReturnsAsync(products.Where(p => p.Stock <= threshold).ToList());
+
+            var mockMapper = new Mock<IMapper>();
+            mockMapper.Setup(m => m.Map<IEnumerable<ProductDTO>>(It.IsAny<IEnumerable<Product>>()))
+                .Returns((IEnumerable<Product> source) =>
+                    source.Select(p => new ProductDTO { Id = p.Id, Name = p.Name, Price = p.Price }));
+
+            var service = new ProductService(mockRepo.Object, mockMapper.Object);
+
+            var result = await service.GetLowStockAsync(threshold);
+
+            Assert.NotNull(result);
+            Assert.All(result, p => Assert.True(p.Stock <= threshold));
+            Assert.Equal(2, result.Count());
+        }
     }
 }
