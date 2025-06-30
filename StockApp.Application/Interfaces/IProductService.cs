@@ -14,5 +14,7 @@ namespace StockApp.Application.Interfaces
         Task<IEnumerable<ProductDTO>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice);
         Task<IEnumerable<ProductDTO>> GetAllAsync(int pageNumber, int pageSize);
         Task<IEnumerable<ProductDTO>> GetProductsByIdsAsync(List<int> productIds);
+        Task<IEnumerable<ProductDTO>> GetLowStockAsync(int threshold);
+
     }
 }

@@ -58,4 +58,12 @@ public class ProductController : ControllerBase
 
         return Ok(products);
     }
+
+    [HttpGet("low-stock")]
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetLowStock([FromQuery] int threshold)
+    {
+        var products = await _service.GetLowStockAsync(threshold);
+        return Ok(products);
+    }
+
 }

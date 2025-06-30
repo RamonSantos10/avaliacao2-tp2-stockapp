@@ -90,5 +90,12 @@ namespace StockApp.Infra.Data.Repositories
         {
             return await _productContext.Products.Where(p => productIds.Contains(p.Id)).ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetLowStockAsync(int threshold)
+        {
+            return await _productContext.Products
+                .Where(p => p.Stock <= threshold)
+                .ToListAsync();
+        }
+
     }
 }
