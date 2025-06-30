@@ -123,10 +123,8 @@ builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>(
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ReviewService>();
 
-// Registro do serviço de relatórios personalizados
 builder.Services.AddScoped<ICustomReportService, CustomReportService>();
 
-// Registro do serviço de cotação de preços
 builder.Services.AddHttpClient<IPricingService, PricingService>(client =>
 {
     client.BaseAddress = new Uri("https://dummyjson.com/");
@@ -154,5 +152,4 @@ app.MapControllers();
 
 app.Run();
 
-// Torna a classe Program acessível para testes de integração
 public partial class Program { }

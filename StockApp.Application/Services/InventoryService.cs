@@ -15,10 +15,10 @@ namespace StockApp.Application.Services
 
         public async Task ReplenishStockAsync()
         {
-            var lowStockProducts = await _productRepository.GetLowStockAsync(10); // threshold de exemplo
+            var lowStockProducts = await _productRepository.GetLowStockAsync(10);
             foreach (var product in lowStockProducts)
             {
-                product.Stock += 50; // quantidade de reposição de exemplo
+                product.Stock += 50;
                 await _productRepository.Update(product);
             }
         }

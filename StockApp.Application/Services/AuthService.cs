@@ -23,8 +23,6 @@ namespace StockApp.Application.Services
                 return null;
             }
 
-            // Em um cenário real, aqui seria gerado um JWT token
-            // Para os testes, retornamos um token simples
             return $"token_{user.Username}_{DateTime.UtcNow.Ticks}";
         }
     }

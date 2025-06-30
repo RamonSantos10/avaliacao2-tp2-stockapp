@@ -32,7 +32,7 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IDiscountService, DiscountService>(); // ← Adicione isto aqui!
+            services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IInventoryService, InventoryService>();
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));

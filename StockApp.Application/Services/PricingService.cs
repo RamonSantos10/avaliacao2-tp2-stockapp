@@ -43,7 +43,6 @@ namespace StockApp.Application.Services
             }
             catch (HttpRequestException)
             {
-                // Se o produto específico não for encontrado, retorna dados padrão
                 return GetDefaultProductDetails(productId);
             }
         }
@@ -63,7 +62,6 @@ namespace StockApp.Application.Services
         }
     }
 
-    // Classe para deserializar a resposta da DummyJSON API
     public class DummyJsonProduct
     {
         [JsonProperty("id")]
