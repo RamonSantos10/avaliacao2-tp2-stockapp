@@ -10,10 +10,19 @@ using Microsoft.AspNetCore.Builder;
 using StockApp.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 DotNetEnv.Env.Load();
 
+// Configuração do Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuração do Serilog no Host
+builder.Host.UseSerilog();
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -100,11 +109,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middleware de logging de requisições do Serilog
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
-
+app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
