@@ -35,12 +35,12 @@ namespace StockApp.API.Controllers
                 var categoryExists = await _categoryRepository.GetById(product.CategoryId);
                 if (categoryExists == null)
                 {
-                    return BadRequest($"Category with ID {product.CategoryId} does not exist. Available categories: 1 (Material Escolar), 2 (Eletrônicos), 3 (Acessórios)");
+                    return BadRequest($"Category with ID {product.CategoryId} does not exist. Please provide a valid CategoryId.");
                 }
             }
             else
             {
-                return BadRequest("CategoryId is required and must be greater than 0. Available categories: 1 (Material Escolar), 2 (Eletrônicos), 3 (Acessórios)");
+                return BadRequest("CategoryId is required and must be greater than 0.");
             }
 
             await _productRepository.AddAsync(product);
