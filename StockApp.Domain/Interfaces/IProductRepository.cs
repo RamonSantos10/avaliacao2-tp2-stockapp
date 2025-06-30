@@ -13,6 +13,7 @@ namespace StockApp.Domain.Interfaces
         Task<Product> GetByIdAsync(int id);
         Task AddAsync(Product product);
         Task<Product> Update(Product product);
+        Task UpdateAsync(Product product);
         Task<Product> Remove(Product product);
         Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize);
         Task<IEnumerable<Product>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice);

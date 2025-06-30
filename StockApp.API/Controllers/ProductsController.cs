@@ -29,6 +29,12 @@ namespace StockApp.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> Create(Product product)
         {
+            // Validar se o nome do produto não é null nem string vazia
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                return BadRequest("Product name is required and cannot be empty.");
+            }
+
             // Validar se o CategoryId existe
             if (product.CategoryId > 0)
             {
@@ -56,6 +62,45 @@ namespace StockApp.API.Controllers
                 return NotFound();
             }
             return Ok(product);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, Product product)
+        {
+            if (id != product.Id)
+            {
+                return BadRequest("The ID in the URL does not match the product ID.");
+            }
+
+            // Validar se o nome do produto não é null nem string vazia
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                return BadRequest("Product name is required and cannot be empty.");
+            }
+
+            // Verificar se o produto existe
+            var existingProduct = await _productRepository.GetByIdAsync(id);
+            if (existingProduct == null)
+            {
+                return NotFound($"Product with ID {id} not found.");
+            }
+
+            // Validar se o CategoryId existe
+            if (product.CategoryId > 0)
+            {
+                var categoryExists = await _categoryRepository.GetById(product.CategoryId);
+                if (categoryExists == null)
+                {
+                    return BadRequest($"Category with ID {product.CategoryId} does not exist. Please provide a valid CategoryId.");
+                }
+            }
+            else
+            {
+                return BadRequest("CategoryId is required and must be greater than 0.");
+            }
+
+            await _productRepository.UpdateAsync(product);
+            return NoContent();
         }
 
         [HttpPost("{productId}/review")]
