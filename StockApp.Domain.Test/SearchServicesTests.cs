@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace StockApp.Domain.Test
 {
-    public class UnitTest1
+    public class SearchServicesTestes
     {
         [Fact]
         public async Task SearchAsync_ShouldReturnFilteredProducts()
         {
-            // Arrange
+            
             var mockRepo = new Mock<IProductRepository>();
             var mockMapper = new Mock<IMapper>();
 
@@ -25,7 +25,7 @@ namespace StockApp.Domain.Test
             var fakeProducts = new List<Product>
             {
                 new Product(1, "Banana", "delicious banana", 5, 100, "banana.png"),
-                new Product(2, "Apple", "sweet apple", 15, 50, "apple.png") // << CORRIGIDO
+                new Product(2, "Apple", "sweet apple", 15, 50, "apple.png") 
             };
 
 
@@ -125,7 +125,7 @@ namespace StockApp.Domain.Test
             var fakeProducts = new List<Product>
         {
             new Product(1, "Banana", "delicious banana", 5, 100, "banana.png"),
-            new Product(2, "Banana", "ripe banana", 999, 50, "banana2.png") // << CORRIGIDO
+            new Product(2, "Banana", "ripe banana", 999, 50, "banana2.png") 
          };
 
             mockRepo.Setup(r => r.SearchAsync(null, 5m, 20m))
