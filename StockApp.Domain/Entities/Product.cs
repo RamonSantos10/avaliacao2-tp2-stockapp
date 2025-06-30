@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StockApp.Domain.Entities
@@ -32,7 +33,7 @@ namespace StockApp.Domain.Entities
         }
 
 
-
+        [JsonIgnore]
         public Category Category { get; set; }
 
         private void ValidateDomain(string name, string description, decimal price, int stock, string image)

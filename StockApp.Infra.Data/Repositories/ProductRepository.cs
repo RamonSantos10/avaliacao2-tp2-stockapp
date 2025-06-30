@@ -97,5 +97,25 @@ namespace StockApp.Infra.Data.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _productContext.Products
+                .Include(p => p.Category)
+                .ToListAsync();
+        }
+
+        public async Task<Product> GetByIdAsync(int id)
+        {
+            return await _productContext.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task AddAsync(Product product)
+        {
+            _productContext.Add(product);
+            await _productContext.SaveChangesAsync();
+        }
+
     }
 }
