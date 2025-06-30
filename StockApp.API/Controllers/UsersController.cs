@@ -23,18 +23,16 @@ namespace StockApp.API.Controllers
         {
             try
             {
-                // Verificar se o usuário já existe
                 var existingUser = await _userRepository.GetByUsernameAsync(userRegisterDto.Username);
                 if (existingUser != null)
                 {
                     return BadRequest("Username already exists");
                 }
 
-                // Criar novo usuário
                 var user = new User
                 {
                     Username = userRegisterDto.Username,
-                    Password = userRegisterDto.Password, // Em produção, deve ser hasheada
+                    Password = userRegisterDto.Password,
                     Role = userRegisterDto.Role
                 };
 
