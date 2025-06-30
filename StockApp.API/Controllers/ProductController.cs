@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,6 +90,24 @@ namespace StockApp.API.Controllers
             var bytes = Encoding.UTF8.GetBytes(csv.ToString());
 
             return File(bytes, "text/csv", "products.csv");
+        }
+
+        [HttpPost("{id}/upload-image")]
+        public async Task<IActionResult> UploadImage(int id, IFormFile image)
+        {
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("Invalid image.");
+            }
+
+            var filePath = Path.Combine("wwwroot/images", $"{id}.jpg");
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            return Ok();
         }
 
     }
