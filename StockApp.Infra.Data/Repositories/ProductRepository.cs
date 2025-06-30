@@ -42,7 +42,7 @@ namespace StockApp.Infra.Data.Repositories
             return product;
         }
 
-        public async Task Update(Product product)
+        public async Task<Product> Update(Product product)
         {
             var existingEntity = _productContext.Products.Local.FirstOrDefault(p => p.Id == product.Id);
 
@@ -56,11 +56,11 @@ namespace StockApp.Infra.Data.Repositories
                 _productContext.Entry(product).State = EntityState.Modified;
             }
 
-           
+
             _productContext.Entry(product.Category).State = EntityState.Unchanged;
 
             await _productContext.SaveChangesAsync();
-            
+            return product;
         }
 
         public async Task<IEnumerable<Product>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice)
@@ -98,5 +98,24 @@ namespace StockApp.Infra.Data.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _productContext.Products
+                .Include(p => p.Category)
+                .ToListAsync();
+        }
+
+        public async Task<Product> GetByIdAsync(int id)
+        {
+            return await _productContext.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task AddAsync(Product product)
+        {
+            _productContext.Add(product);
+            await _productContext.SaveChangesAsync();
+        }
     }
 }

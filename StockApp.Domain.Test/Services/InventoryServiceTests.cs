@@ -37,7 +37,7 @@ namespace StockApp.Domain.Test.Services
                 .ReturnsAsync(lowStockProducts);
 
             _mockProductRepository.Setup(x => x.Update(It.IsAny<Product>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync((Product p) => p);
 
             // Act
             await _inventoryService.ReplenishStockAsync();
@@ -64,7 +64,7 @@ namespace StockApp.Domain.Test.Services
                 .ReturnsAsync(lowStockProducts);
 
             _mockProductRepository.Setup(x => x.Update(It.IsAny<Product>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync((Product p) => p);
 
             // Act
             await _inventoryService.ReplenishStockAsync(threshold, replenishQuantity);

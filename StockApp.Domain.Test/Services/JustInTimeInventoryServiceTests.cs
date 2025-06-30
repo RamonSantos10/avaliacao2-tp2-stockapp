@@ -25,7 +25,7 @@ namespace StockApp.Domain.Test
                                  .ReturnsAsync(products);
 
             mockProductRepository.Setup(repo => repo.Update(It.IsAny<Product>()))
-                                 .Returns(Task.CompletedTask);
+                                 .ReturnsAsync((Product p) => p);
 
             var service = new JustInTimeInventoryService(mockProductRepository.Object);
 
@@ -52,7 +52,7 @@ namespace StockApp.Domain.Test
                                  .ReturnsAsync(products);
 
             mockProductRepository.Setup(repo => repo.Update(It.IsAny<Product>()))
-                                 .Returns(Task.CompletedTask);
+                                 .ReturnsAsync((Product p) => p);
 
             var service = new JustInTimeInventoryService(mockProductRepository.Object);
 
