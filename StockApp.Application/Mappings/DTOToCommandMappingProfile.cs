@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using StockApp.Application.DTOs;
 using StockApp.Application.Products.Commands;
 

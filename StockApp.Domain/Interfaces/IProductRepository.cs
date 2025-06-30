@@ -1,4 +1,4 @@
-﻿using StockApp.Domain.Entities;
+using StockApp.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,7 +9,10 @@ namespace StockApp.Domain.Interfaces
         Task<IEnumerable<Product>> GetProducts();
         Task<Product> GetById(int? id);
         Task<Product> Create(Product product);
-        Task Update(Product product);
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task<Product> GetByIdAsync(int id);
+        Task AddAsync(Product product);
+        Task<Product> Update(Product product);
         Task<Product> Remove(Product product);
         Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize);
         Task<IEnumerable<Product>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice);
