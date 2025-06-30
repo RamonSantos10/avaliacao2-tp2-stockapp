@@ -1,9 +1,4 @@
 ﻿using StockApp.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StockApp.Application.Interfaces
 {
@@ -14,7 +9,7 @@ namespace StockApp.Application.Interfaces
         Task Add(ProductDTO productDto);
         Task Update(ProductDTO productDto);
         Task Remove(int? id);
-        Task<IEnumerable<ProductDTO>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice);   
-
+        Task<IEnumerable<ProductDTO>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice);
+        Task<IEnumerable<ProductDTO>> GetAllAsync(int pageNumber, int pageSize);
     }
 }

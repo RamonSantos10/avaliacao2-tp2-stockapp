@@ -3,11 +3,6 @@ using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StockApp.Application.Services
 {
@@ -54,6 +49,11 @@ namespace StockApp.Application.Services
         public async Task<IEnumerable<ProductDTO>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice)
         {
             var products = await _productRepository.SearchAsync(name, minPrice, maxPrice);
+            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+        }
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync(int pageNumber, int pageSize)
+        {
+            var products = await _productRepository.GetAllAsync(pageNumber, pageSize);
             return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
 

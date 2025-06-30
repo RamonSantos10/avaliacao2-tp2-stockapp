@@ -75,5 +75,12 @@ namespace StockApp.Infra.Data.Repositories
 
             return await query.ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize)
+        {
+            return await _productContext.Products
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }

@@ -22,4 +22,15 @@ public class ProductController : ControllerBase
         var products = await _service.SearchAsync(name, minPrice, maxPrice);
         return Ok(products);
     }
+    [HttpGet]
+    public async Task<IActionResult> GetAll(
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 10)
+    {
+        if (pageNumber <= 0) pageNumber = 1;
+        if (pageSize <= 0) pageSize = 10;
+
+        var products = await _service.GetAllAsync(pageNumber, pageSize);
+        return Ok(products);
+    }
 }
