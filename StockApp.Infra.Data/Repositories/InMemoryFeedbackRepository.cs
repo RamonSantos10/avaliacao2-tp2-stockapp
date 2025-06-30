@@ -1,18 +1,17 @@
 ﻿using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
-namespace StockApp.Infra.Data.Repositories
-{
-    public class InMemoryFeedbackRepository : IFeedbackRepository
-    {
-        private readonly List<Feedback> _storage = new();
-        public InMemoryFeedbackRepository()
-        {
-        }
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-        public Task AddAsync(Feedback feedback)
-        {
-            _storage.Add(feedback);
-            return Task.CompletedTask;
-        }
+public class InMemoryFeedbackRepository : IFeedbackRepository
+{
+    private readonly List<Feedback> _feedbacks = new();
+
+    public Task SaveAsync(Feedback feedback)
+    {
+        _feedbacks.Add(feedback);
+        return Task.CompletedTask;
     }
+
+    public IEnumerable<Feedback> GetAll() => _feedbacks;
 }

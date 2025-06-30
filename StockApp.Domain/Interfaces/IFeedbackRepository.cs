@@ -4,6 +4,6 @@ namespace StockApp.Domain.Interfaces
 {
     public interface IFeedbackRepository
     {
-        Task AddAsync(Feedback feedback);
+        Task SaveAsync(Feedback feedback);
     }
 }

@@ -23,6 +23,7 @@ namespace StockApp.Infra.Data.Context
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            builder.Entity<Feedback>().ToTable("Feedbacks");
         }
     }
 }

@@ -16,7 +16,19 @@ namespace StockApp.Application.Services
         }
         public async Task SubmitFeedbackAsync(string userId, string message)
         {
-            await CollectFeedbackAsync(userId, message);
+            if (!string.IsNullOrEmpty(message))
+            {
+                var feedback = new Feedback
+                {
+                    UserId = userId,
+                    FeedbackText = message,
+                    CreatedAt = DateTime.UtcNow,
+                    Sentiment = null
+                };
+
+                await _feedbackRepository.SaveAsync(feedback);
+                
+            }
         }
         public async Task CollectFeedbackAsync(string phoneNumber, string feedback)
         {
@@ -35,7 +47,8 @@ namespace StockApp.Application.Services
                     Sentiment = null
                 };
 
-                await _feedbackRepository.AddAsync(fb);
+                await _feedbackRepository.SaveAsync(fb);
+                
 
                 var thankYouMessage = "Obrigado pelo seu feedback!";
                 await _smsService.SendSmsAsync(phoneNumber, thankYouMessage);

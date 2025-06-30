@@ -13,11 +13,12 @@ namespace StockApp.Infra.Data.Repositories
         {
             _context = context;
         }
-
-        public async Task AddAsync(Feedback feedback)
+        public async Task SaveAsync(Feedback feedback)
         {
-            _context.Feedbacks.Add(feedback);
+            await _context.Feedbacks.AddAsync(feedback);
             await _context.SaveChangesAsync();
         }
+
     }
 }
+

@@ -9,7 +9,6 @@ using StockApp.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using StockApp.Application.Interfaces;
 
-DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +37,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 
 builder.Services.AddSingleton<ISmsService, FakeSmsService>();
+
 builder.Services.AddScoped<ISmsFeedbackService, SmsFeedbackService>();
 
 var app = builder.Build();
