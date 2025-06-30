@@ -268,10 +268,10 @@ namespace StockApp.Application.Services
 
         private decimal CalculatePerformanceScore(Domain.Entities.Product product)
         {
-            // Score baseado em preço, estoque e outros fatores
-            var priceScore = Math.Min(product.Price / 100, 10); // Normaliza preço
-            var stockScore = Math.Min(product.Stock / 10, 10); // Normaliza estoque
-            var categoryScore = 5; // Score base por categoria
+
+            var priceScore = Math.Min(product.Price / 100, 10);
+            var stockScore = Math.Min(product.Stock / 10, 10);
+            var categoryScore = 5;
 
             return (priceScore + stockScore + categoryScore) / 3;
         }

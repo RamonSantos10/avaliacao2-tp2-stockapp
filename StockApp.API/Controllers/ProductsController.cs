@@ -36,13 +36,11 @@ namespace StockApp.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> Create(Product product)
         {
-            // Validar se o nome do produto não é null nem string vazia
             if (string.IsNullOrWhiteSpace(product.Name))
             {
                 return BadRequest("Product name is required and cannot be empty.");
             }
 
-            // Validar se o CategoryId existe
             if (product.CategoryId > 0)
             {
                 var categoryExists = await _categoryRepository.GetById(product.CategoryId);
@@ -79,20 +77,17 @@ namespace StockApp.API.Controllers
                 return BadRequest("The ID in the URL does not match the product ID.");
             }
 
-            // Validar se o nome do produto não é null nem string vazia
             if (string.IsNullOrWhiteSpace(product.Name))
             {
                 return BadRequest("Product name is required and cannot be empty.");
             }
 
-            // Verificar se o produto existe
             var existingProduct = await _productRepository.GetByIdAsync(id);
             if (existingProduct == null)
             {
                 return NotFound($"Product with ID {id} not found.");
             }
 
-            // Validar se o CategoryId existe
             if (product.CategoryId > 0)
             {
                 var categoryExists = await _categoryRepository.GetById(product.CategoryId);

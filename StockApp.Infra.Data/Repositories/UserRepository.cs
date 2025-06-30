@@ -14,19 +14,19 @@ namespace StockApp.Infra.Data.Repositories
 
         public async Task<User> GetByIdAsync(int id)
         {
-            await Task.Delay(10); // Simula operação assíncrona
+            await Task.Delay(10);
             return _users.FirstOrDefault(u => u.Id == id);
         }
 
         public async Task<User> GetByUsernameAsync(string username)
         {
-            await Task.Delay(10); // Simula operação assíncrona
+            await Task.Delay(10);
             return _users.FirstOrDefault(u => u.Username == username);
         }
 
         public async Task CreateAsync(User user)
         {
-            await Task.Delay(10); // Simula operação assíncrona
+            await Task.Delay(10);
             user.Id = _nextId++;
             _users.Add(user);
         }

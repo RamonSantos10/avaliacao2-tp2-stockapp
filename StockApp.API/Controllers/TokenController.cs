@@ -22,7 +22,6 @@ namespace StockApp.API.Controllers
         {
             try
             {
-                // Validação de campos nulos
                 if (userLoginDto == null || string.IsNullOrEmpty(userLoginDto.Username) || string.IsNullOrEmpty(userLoginDto.Password))
                 {
                     return BadRequest("Login não pode ser nulo");
