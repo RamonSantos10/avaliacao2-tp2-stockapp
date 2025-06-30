@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StockApp.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using Moq.EntityFrameworkCore;
+
 
 namespace StockApp.Domain.Test
 {
