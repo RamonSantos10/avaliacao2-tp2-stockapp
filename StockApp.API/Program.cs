@@ -8,7 +8,6 @@ using StockApp.Infra.Data.Repositories;
 using StockApp.Application.Services;
 using Microsoft.AspNetCore.Builder;
 
-
 DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,19 +22,19 @@ if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("ConnectionString 'DefaultConnection' não configurada.");
 }
 
-builder.Services.AddInfrastructureAPI(builder.Configuration);
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructureAPI(builder.Configuration);
 
 var app = builder.Build();
 
