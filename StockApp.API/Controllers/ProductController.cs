@@ -68,6 +68,13 @@ namespace StockApp.API.Controllers
             var products = await _service.GetLowStockAsync(threshold);
             return Ok(products);
         }
+
+        [HttpGet("filtered")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetFiltered([FromQuery] decimal? minPrice, [FromQuery] decimal? maxPrice)
+        {
+            var products = await _service.SearchAsync(null, minPrice, maxPrice);
+            return Ok(products);
+        }
         [HttpGet("export")]
         public async Task<IActionResult> ExportToCsv()
         {
