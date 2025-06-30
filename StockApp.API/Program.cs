@@ -50,6 +50,13 @@ builder.Services.AddScoped<ReviewService>();
 // Registro do serviço de relatórios personalizados
 builder.Services.AddScoped<ICustomReportService, CustomReportService>();
 
+// Registro do serviço de cotação de preços
+builder.Services.AddHttpClient<IPricingService, PricingService>(client =>
+{
+    client.BaseAddress = new Uri("https://dummyjson.com/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
