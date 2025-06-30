@@ -139,5 +139,15 @@ namespace StockApp.Infra.Data.Repositories
             _productContext.Add(product);
             await _productContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var product = await _productContext.Products.FindAsync(id);
+            if (product != null)
+            {
+                _productContext.Products.Remove(product);
+                await _productContext.SaveChangesAsync();
+            }
+        }
     }
 }
