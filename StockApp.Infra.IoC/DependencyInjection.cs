@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +33,7 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IDiscountService, DiscountService>(); // ← Adicione isto aqui!
+            services.AddScoped<IInventoryService, InventoryService>();
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 

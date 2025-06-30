@@ -56,6 +56,7 @@ namespace StockApp.Infra.Data.Repositories
                 _productContext.Entry(product).State = EntityState.Modified;
             }
 
+
             _productContext.Entry(product.Category).State = EntityState.Unchanged;
 
             await _productContext.SaveChangesAsync();
@@ -116,6 +117,5 @@ namespace StockApp.Infra.Data.Repositories
             _productContext.Add(product);
             await _productContext.SaveChangesAsync();
         }
-
     }
 }

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StockApp.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using Moq.EntityFrameworkCore;
+
 
 namespace StockApp.Domain.Test
 {
@@ -102,7 +102,7 @@ namespace StockApp.Domain.Test
             {
                 new Product(1, "Produto1", "descrição", 10.0m, 5, "img"),
                 new Product(2, "Produto2", "descrição", 20.0m, 10, "img"),
-                new Product(3, "Produto3", "descrição", 30.0m, 15, "img") 
+                new Product(3, "Produto3", "descrição", 30.0m, 15, "img")
             };
 
             var mockRepo = new Mock<IProductRepository>();

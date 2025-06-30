@@ -1,4 +1,4 @@
-﻿using StockApp.Domain.Entities;
+using StockApp.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
