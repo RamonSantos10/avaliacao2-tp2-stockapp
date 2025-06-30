@@ -42,7 +42,7 @@ namespace StockApp.Infra.Data.Repositories
             return product;
         }
 
-        public async Task<Product> Update(Product product)
+        public async Task Update(Product product)
         {
             var existingEntity = _productContext.Products.Local.FirstOrDefault(p => p.Id == product.Id);
 
@@ -56,10 +56,11 @@ namespace StockApp.Infra.Data.Repositories
                 _productContext.Entry(product).State = EntityState.Modified;
             }
 
+           
             _productContext.Entry(product.Category).State = EntityState.Unchanged;
 
             await _productContext.SaveChangesAsync();
-            return product;
+            
         }
 
         public async Task<IEnumerable<Product>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice)
