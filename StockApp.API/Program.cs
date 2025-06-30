@@ -13,6 +13,7 @@ using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AspNetCoreRateLimit;
 
 DotNetEnv.Env.Load();
 
@@ -64,6 +65,15 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
+// Configuração do Rate Limiting
+builder.Services.AddOptions();
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
 builder.Services.AddControllers(options =>
 {
@@ -133,7 +143,7 @@ if (app.Environment.IsDevelopment())
 
 // Middleware de logging de requisições do Serilog
 app.UseSerilogRequestLogging();
-
+app.UseIpRateLimiting();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
