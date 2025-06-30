@@ -22,11 +22,17 @@ namespace StockApp.API.Controllers
         {
             try
             {
+                // Validação de campos nulos
+                if (userLoginDto == null || string.IsNullOrEmpty(userLoginDto.Username) || string.IsNullOrEmpty(userLoginDto.Password))
+                {
+                    return BadRequest("Login não pode ser nulo");
+                }
+
                 var token = await _authService.AuthenticateAsync(userLoginDto.Username, userLoginDto.Password);
                 
                 if (token == null)
                 {
-                    return Unauthorized("Invalid credentials");
+                    return Unauthorized("Credenciais invalidas");
                 }
 
                 var tokenResponse = new TokenResponseDto

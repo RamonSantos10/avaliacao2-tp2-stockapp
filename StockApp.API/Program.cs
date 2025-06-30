@@ -55,6 +55,8 @@ builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>(
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ReviewService>();
 
+// Registro do serviço de relatórios personalizados
+builder.Services.AddScoped<ICustomReportService, CustomReportService>();
 
 var app = builder.Build();
 
