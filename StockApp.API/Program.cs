@@ -18,9 +18,10 @@ using StockApp.Application.Services;
         builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
         builder.Services.AddScoped<IFeedbackService, FeedbackService>();
         builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+        builder.Services.AddInfrastructure(builder.Configuration);
 
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 

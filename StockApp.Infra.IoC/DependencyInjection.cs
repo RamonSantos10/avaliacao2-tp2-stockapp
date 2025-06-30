@@ -43,6 +43,8 @@ namespace StockApp.Infra.IoC
             services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
             services.AddScoped<IFeedbackRepository, InMemoryFeedbackRepository>();
 
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<ReviewService>();
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
             services.AddMediatR(myhandlers);
