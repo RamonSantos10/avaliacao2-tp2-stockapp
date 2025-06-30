@@ -26,7 +26,7 @@ namespace StockApp.Application.Services
             };
 
             
-            await _feedbackRepository.SaveAsync(feedback);
+            await _feedbackRepository.AddAsync(feedback);
         }
     }
 }

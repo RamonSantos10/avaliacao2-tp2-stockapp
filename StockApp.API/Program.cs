@@ -7,6 +7,7 @@ using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Repositories;
 using StockApp.Application.Services;
 using Microsoft.AspNetCore.Builder;
+using StockApp.Application.Interfaces;
 
 DotNetEnv.Env.Load();
 
@@ -35,6 +36,9 @@ builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>(
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
+
+builder.Services.AddSingleton<ISmsService, FakeSmsService>();
+builder.Services.AddScoped<ISmsFeedbackService, SmsFeedbackService>();
 
 var app = builder.Build();
 
