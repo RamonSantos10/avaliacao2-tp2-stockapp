@@ -39,6 +39,11 @@ builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>(
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
 
+builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<ReviewService>();
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

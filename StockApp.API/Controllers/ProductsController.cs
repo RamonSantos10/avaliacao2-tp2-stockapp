@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.Services;
 using StockApp.Application.DTOs;
+using StockApp.Domain.Entities;
+using StockApp.Domain.Interfaces;
+
+
 
 namespace StockApp.API.Controllers
 {
@@ -28,5 +32,6 @@ namespace StockApp.API.Controllers
             var reviews = await _reviewService.GetReviewsForProductAsync(productId);
             return Ok(reviews);
         }
+
     }
 }
