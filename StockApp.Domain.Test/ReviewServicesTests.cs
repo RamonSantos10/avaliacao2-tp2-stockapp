@@ -1,37 +1,43 @@
-﻿using Xunit;
+﻿using System.Threading.Tasks;
 using Moq;
-using System.Threading.Tasks;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
 using StockApp.Application.Services;
+using Xunit;
 
-namespace StockApp.Domain.Test
+public class ReviewServiceTests
 {
-    public class ReviewServicesTests
+    [Fact]
+    public async Task AddReviewAsync_Should_Call_SentimentAnalysis_And_Save_Review()
     {
-        [Fact]
-        public async Task SubmitReviewAsync_ShouldAddReviewCorrectly()
-        {
-            // Arrange
-            var mockRepo = new Mock<IReviewRepository>();
-            var service = new ReviewService(mockRepo.Object);
+        // Arrange
+        var mockReviewRepo = new Mock<IReviewRepository>();
+        var mockSentimentService = new Mock<ISentimentAnalysisService>();
 
-            int productId = 1;
-            string userId = "user123";
-            int rating = 5;
-            string comment = "Excelente!";
+        var expectedSentiment = "Positive";
+        mockSentimentService
+            .Setup(s => s.AnalyzeSentiment(It.IsAny<string>()))
+            .Returns(expectedSentiment);
 
-            // Act
-            await service.AddReviewAsync(productId, userId, rating, comment);
+        var reviewService = new ReviewService(mockReviewRepo.Object, mockSentimentService.Object);
 
-            // Assert
-            mockRepo.Verify(repo => repo.AddAsync(It.Is<Review>(r =>
-                r.ProductId == productId &&
-                r.UserId == userId &&
-                r.Rating == rating &&
-                r.Comment == comment &&
-                r.Date != default
-            )), Times.Once);
-        }
-        }
+        int productId = 1;
+        string userId = "user123";
+        int rating = 5;
+        string comment = "Muito bom produto!";
+
+        // Act
+        await reviewService.AddReviewAsync(productId, userId, rating, comment);
+
+        // Assert
+        mockSentimentService.Verify(s => s.AnalyzeSentiment(comment), Times.Once);
+
+        mockReviewRepo.Verify(r => r.AddAsync(It.Is<Review>(review =>
+            review.ProductId == productId &&
+            review.UserId == userId &&
+            review.Rating == rating &&
+            review.Comment == comment &&
+            review.Sentiment == expectedSentiment
+        )), Times.Once);
+    }
 }
