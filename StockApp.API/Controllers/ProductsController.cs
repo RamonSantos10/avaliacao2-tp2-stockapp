@@ -26,6 +26,13 @@ namespace StockApp.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+        {
+            var products = await _productRepository.GetAllAsync();
+            return Ok(products);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Product>> Create(Product product)
         {
