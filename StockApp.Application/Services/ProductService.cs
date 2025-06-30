@@ -1,4 +1,4 @@
-﻿using StockApp.Application.DTOs; 
+using StockApp.Application.DTOs; 
 using StockApp.Application.Interfaces;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
@@ -24,6 +24,7 @@ namespace StockApp.Application.Services
             var productEntity = _mapper.Map<Product>(productDto);
             await _productRepository.Create(productEntity);
         }
+
         public async Task<ProductDTO> GetProductById(int? id)
         {
             var productEntity = await _productRepository.GetById(id);
@@ -56,10 +57,17 @@ namespace StockApp.Application.Services
             var productsEntity = await _productRepository.SearchAsync(name, minPrice, maxPrice);
             return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
         }
+
         public async Task<IEnumerable<ProductDTO>> GetProductsByIdsAsync(List<int> productIds)
         {
             var productsEntity = await _productRepository.GetByIdsAsync(productIds);
             return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
+        }
+
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync(int pageNumber, int pageSize)
+        {
+            var products = await _productRepository.GetAllAsync(pageNumber, pageSize);
+            return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
     }
 }

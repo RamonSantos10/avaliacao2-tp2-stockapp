@@ -1,7 +1,10 @@
-﻿using StockApp.Domain.Entities;
+using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
 using StockApp.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StockApp.Infra.Data.Repositories
 {
@@ -28,7 +31,7 @@ namespace StockApp.Infra.Data.Repositories
         public async Task<IEnumerable<Product>> GetProducts()
         {
             return await _productContext.Products
-                .Include(p => p.Category) 
+                .Include(p => p.Category)
                 .ToListAsync();
         }
 
@@ -55,7 +58,6 @@ namespace StockApp.Infra.Data.Repositories
 
             _productContext.Entry(product.Category).State = EntityState.Unchanged;
 
-
             await _productContext.SaveChangesAsync();
             return product;
         }
@@ -76,9 +78,16 @@ namespace StockApp.Infra.Data.Repositories
             return await query.ToListAsync();
         }
 
-         public async Task<IEnumerable<Product>> GetByIdsAsync(List<int> productIds)
+        public async Task<IEnumerable<Product>> GetAllAsync(int pageNumber, int pageSize)
         {
-            
+            return await _productContext.Products
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetByIdsAsync(List<int> productIds)
+        {
             return await _productContext.Products.Where(p => productIds.Contains(p.Id)).ToListAsync();
         }
     }

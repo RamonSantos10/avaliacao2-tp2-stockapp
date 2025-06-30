@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using System.Collections.Generic;
@@ -26,11 +26,23 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        if (pageNumber <= 0) pageNumber = 1;
+        if (pageSize <= 0) pageSize = 10;
+
+        var products = await _service.GetAllAsync(pageNumber, pageSize);
+        return Ok(products);
+    }
+
     [HttpPost("compare")]
-    [ProducesResponseType(typeof(IEnumerable<ProductDTO>), 200)] 
+    [ProducesResponseType(typeof(IEnumerable<ProductDTO>), 200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> CompareProducts([FromBody] List<int> productIds) // Alterado para ProductDTO
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> CompareProducts([FromBody] List<int> productIds)
     {
         if (productIds == null || !productIds.Any())
         {
