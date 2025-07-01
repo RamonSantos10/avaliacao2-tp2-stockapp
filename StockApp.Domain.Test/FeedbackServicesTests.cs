@@ -27,6 +27,7 @@ namespace StockApp.Domain.Test
                 f.FeedbackText == "Muito bom" &&
                 f.Sentiment == "Positivo"
             )), Times.Once);
+
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using StockApp.API;
 using StockApp.Application.DTOs;
 using StockApp.Infra.Data.Context;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace StockApp.Domain.Test
 {
@@ -176,6 +178,17 @@ namespace StockApp.Domain.Test
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
+                });
+            });
+
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(new Dictionary<string, string>
+                {
+                    ["ConnectionStrings:DefaultConnection"] = "InMemoryDatabase",
+                    ["Jwt:Key"] = "minha-chave-secreta-super-segura-com-pelo-menos-32-caracteres",
+                    ["Jwt:Issuer"] = "StockApp.API",
+                    ["Jwt:Audience"] = "StockApp.Client"
                 });
             });
 

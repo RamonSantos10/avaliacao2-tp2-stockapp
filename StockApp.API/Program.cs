@@ -14,37 +14,64 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AspNetCoreRateLimit;
+using Microsoft.EntityFrameworkCore;
 
-DotNetEnv.Env.Load();
+var builder = WebApplication.CreateBuilder(args);
 
 // Configuração do Serilog
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
-var builder = WebApplication.CreateBuilder(args);
-
 // Configuração do Serilog no Host
 builder.Host.UseSerilog();
 
+// Variáveis de ambiente
 builder.Configuration.AddEnvironmentVariables();
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Para ambiente de teste, usar uma connection string padrão se não estiver configurada
 if (string.IsNullOrEmpty(connectionString))
 {
-    Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' não foi encontrada. Verifique appsettings.json ou .env.");
-    throw new InvalidOperationException("ConnectionString 'DefaultConnection' não configurada.");
+    if (builder.Environment.EnvironmentName == "Testing")
+    {
+        connectionString = "Data Source=:memory:";
+    }
+    else
+    {
+        Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' não foi encontrada. Verifique appsettings.json ou .env.");
+        throw new InvalidOperationException("ConnectionString 'DefaultConnection' não configurada.");
+    }
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+// Repositórios
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
+// Serviços da aplicação
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ICustomReportService, CustomReportService>();
+builder.Services.AddScoped<ISmsFeedbackService, SmsFeedbackService>();
+builder.Services.AddSingleton<ISmsService, FakeSmsService>();
+
+// HTTP Client para Pricing
+builder.Services.AddHttpClient<IPricingService, PricingService>(client =>
+{
+    client.BaseAddress = new Uri("https://dummyjson.com/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+// JWT
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 builder.Services.AddAuthentication(options =>
 {
@@ -66,7 +93,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Configuração do Rate Limiting
+// Rate Limiting
 builder.Services.AddOptions();
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
@@ -75,6 +102,7 @@ builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounte
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
+// Controllers e Swagger
 builder.Services.AddControllers(options =>
 {
     options.SuppressAsyncSuffixInActionNames = false;
@@ -83,6 +111,7 @@ builder.Services.AddControllers(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -104,32 +133,15 @@ builder.Services.AddSwaggerGen(c =>
     };
 
     c.AddSecurityDefinition("Bearer", securitySchema);
-
-    var securityRequirement = new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         { securitySchema, new[] { "Bearer" } }
-    };
-    c.AddSecurityRequirement(securityRequirement);
+    });
 });
 
-builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-builder.Services.AddScoped<IFeedbackService, FeedbackService>();
-builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
-
+// Infraestrutura personalizada
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructureAPI(builder.Configuration);
-
-builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
-builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<ReviewService>();
-
-builder.Services.AddScoped<ICustomReportService, CustomReportService>();
-
-builder.Services.AddHttpClient<IPricingService, PricingService>(client =>
-{
-    client.BaseAddress = new Uri("https://dummyjson.com/");
-    client.Timeout = TimeSpan.FromSeconds(30);
-});
 
 var app = builder.Build();
 
@@ -139,7 +151,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Middleware de logging de requisições do Serilog
+// Middleware
 app.UseSerilogRequestLogging();
 app.UseIpRateLimiting();
 app.UseHttpsRedirection();
