@@ -63,6 +63,7 @@ builder.Services.AddScoped<ReviewService, ReviewService>();
 builder.Services.AddScoped<ICustomReportService, CustomReportService>();
 builder.Services.AddScoped<ISmsFeedbackService, SmsFeedbackService>();
 builder.Services.AddSingleton<ISmsService, FakeSmsService>();
+builder.Services.AddScoped<ITaxService, TaxService>();
 
 // HTTP Client para Pricing
 builder.Services.AddHttpClient<IPricingService, PricingService>(client =>

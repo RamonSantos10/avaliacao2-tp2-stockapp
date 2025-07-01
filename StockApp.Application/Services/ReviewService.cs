@@ -1,9 +1,10 @@
 ﻿using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
+using StockApp.Application.Interfaces;
 
 namespace StockApp.Application.Services
 {
-    public class ReviewService
+    public class ReviewService : IReviewService
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly ISentimentAnalysisService _sentimentService;

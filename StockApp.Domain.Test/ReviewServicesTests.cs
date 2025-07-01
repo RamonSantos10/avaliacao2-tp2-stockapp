@@ -7,19 +7,25 @@ using Xunit;
 
 public class ReviewServiceTests
 {
+    private readonly Mock<IReviewRepository> _mockReviewRepo;
+    private readonly Mock<ISentimentAnalysisService> _mockSentimentService;
+    private readonly ReviewService _reviewService;
+
+    public ReviewServiceTests()
+    {
+        _mockReviewRepo = new Mock<IReviewRepository>();
+        _mockSentimentService = new Mock<ISentimentAnalysisService>();
+        _reviewService = new ReviewService(_mockReviewRepo.Object, _mockSentimentService.Object);
+    }
+
     [Fact]
     public async Task AddReviewAsync_Should_Call_SentimentAnalysis_And_Save_Review()
     {
         // Arrange
-        var mockReviewRepo = new Mock<IReviewRepository>();
-        var mockSentimentService = new Mock<ISentimentAnalysisService>();
-
         var expectedSentiment = "Positive";
-        mockSentimentService
+        _mockSentimentService
             .Setup(s => s.AnalyzeSentiment(It.IsAny<string>()))
             .Returns(expectedSentiment);
-
-        var reviewService = new ReviewService(mockReviewRepo.Object, mockSentimentService.Object);
 
         int productId = 1;
         string userId = "user123";
@@ -27,17 +33,50 @@ public class ReviewServiceTests
         string comment = "Muito bom produto!";
 
         // Act
-        await reviewService.AddReviewAsync(productId, userId, rating, comment);
+        await _reviewService.AddReviewAsync(productId, userId, rating, comment);
 
         // Assert
-        mockSentimentService.Verify(s => s.AnalyzeSentiment(comment), Times.Once);
+        _mockSentimentService.Verify(s => s.AnalyzeSentiment(comment), Times.Once);
 
-        mockReviewRepo.Verify(r => r.AddAsync(It.Is<Review>(review =>
+        _mockReviewRepo.Verify(r => r.AddAsync(It.Is<Review>(review =>
             review.ProductId == productId &&
             review.UserId == userId &&
             review.Rating == rating &&
             review.Comment == comment &&
             review.Sentiment == expectedSentiment
         )), Times.Once);
+    }
+
+    [Theory]
+    [InlineData(0)] // Rating muito baixo
+    [InlineData(6)] // Rating muito alto
+    public async Task AddReviewAsync_Should_Throw_Exception_For_Invalid_Rating(int invalidRating)
+    {
+        // Arrange
+        int productId = 1;
+        string userId = "user123";
+        string comment = "Teste de review";
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => _reviewService.AddReviewAsync(productId, userId, invalidRating, comment)
+        );
+    }
+
+    [Theory]
+    [InlineData("")]     // Comentário vazio
+    [InlineData(null)]   // Comentário nulo
+    [InlineData("   ")] // Apenas espaços em branco
+    public async Task AddReviewAsync_Should_Throw_Exception_For_Invalid_Comment(string invalidComment)
+    {
+        // Arrange
+        int productId = 1;
+        string userId = "user123";
+        int rating = 4;
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => _reviewService.AddReviewAsync(productId, userId, rating, invalidComment)
+        );
     }
 }
