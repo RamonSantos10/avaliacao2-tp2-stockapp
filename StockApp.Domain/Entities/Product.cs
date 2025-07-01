@@ -1,8 +1,10 @@
-﻿using StockApp.Domain.Validation;
+using StockApp.Domain.Validation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StockApp.Domain.Entities
@@ -14,10 +16,14 @@ namespace StockApp.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public int Stock { get; set;}
+        public int Stock { get; set; }
         public string Image { get; set; }
         public int CategoryId { get; set; }
         #endregion
+
+        public Product()
+        {
+        }
 
         public Product(string name, string description, decimal price, int stock, string image)
         {
@@ -27,13 +33,14 @@ namespace StockApp.Domain.Entities
         public Product(int id, string name, string description, decimal price, int stock, string image)
         {
             DomainExceptionValidation.When(id < 0, "Update Invalid Id value");
-            Id= id;
+            Id = id;
             ValidateDomain(name, description, price, stock, image);
         }
 
 
 
-        public Category Category { get; set; }
+        [JsonIgnore]
+        public Category? Category { get; set; }
 
         private void ValidateDomain(string name, string description, decimal price, int stock, string image)
         {
@@ -53,7 +60,7 @@ namespace StockApp.Domain.Entities
 
             DomainExceptionValidation.When(stock < 0, "Invalid stock negative value.");
 
-         
+
             if (!string.IsNullOrEmpty(image))
             {
                 DomainExceptionValidation.When(image.Length > 250, "Invalid image name, too long, maximum 250 characters.");

@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +32,8 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IDiscountService, DiscountService>(); // ← Adicione isto aqui!
+            services.AddScoped<IDiscountService, DiscountService>();
+            services.AddScoped<IInventoryService, InventoryService>();
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
@@ -40,6 +41,10 @@ namespace StockApp.Infra.IoC
             services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ReviewService>();
+            
+            // Webhook Service
+            services.AddScoped<IWebhookService, WebhookService>();
+            services.AddHttpClient<WebhookService>();
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
             services.AddMediatR(myhandlers);

@@ -1,20 +1,17 @@
-﻿using AutoMapper;
-using StockApp.Application.DTOs;
+using StockApp.Application.DTOs; 
 using StockApp.Application.Interfaces;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Interfaces;
-using System;
+using AutoMapper; 
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StockApp.Application.Services
 {
     public class ProductService : IProductService
     {
-        private IProductRepository _productRepository;
-        private IMapper _mapper;
+        private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
         public ProductService(IProductRepository productRepository, IMapper mapper)
         {
@@ -28,22 +25,25 @@ namespace StockApp.Application.Services
             await _productRepository.Create(productEntity);
         }
 
+        public async Task<ProductDTO> GetProductById(int? id)
+        {
+            var productEntity = await _productRepository.GetById(id);
+            return _mapper.Map<ProductDTO>(productEntity);
+        }
+
         public async Task<IEnumerable<ProductDTO>> GetProducts()
         {
             var productsEntity = await _productRepository.GetProducts();
             return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
         }
 
-        public async Task<ProductDTO> GetProductById(int? id)
-        {
-            var productEntity = _productRepository.GetById(id);
-            return _mapper.Map<ProductDTO>(productEntity);
-        }
-
         public async Task Remove(int? id)
         {
-            var productEntity = _productRepository.GetById(id).Result;
-            await _productRepository.Remove(productEntity);
+            var productEntity = await _productRepository.GetById(id);
+            if (productEntity != null)
+            {
+                await _productRepository.Remove(productEntity);
+            }
         }
 
         public async Task Update(ProductDTO productDto)
@@ -51,9 +51,27 @@ namespace StockApp.Application.Services
             var productEntity = _mapper.Map<Product>(productDto);
             await _productRepository.Update(productEntity);
         }
+
         public async Task<IEnumerable<ProductDTO>> SearchAsync(string name, decimal? minPrice, decimal? maxPrice)
         {
-            var products = await _productRepository.SearchAsync(name, minPrice, maxPrice);
+            var productsEntity = await _productRepository.SearchAsync(name, minPrice, maxPrice);
+            return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
+        }
+
+        public async Task<IEnumerable<ProductDTO>> GetProductsByIdsAsync(List<int> productIds)
+        {
+            var productsEntity = await _productRepository.GetByIdsAsync(productIds);
+            return _mapper.Map<IEnumerable<ProductDTO>>(productsEntity);
+        }
+
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync(int pageNumber, int pageSize)
+        {
+            var products = await _productRepository.GetAllAsync(pageNumber, pageSize);
+            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+        }
+        public async Task<IEnumerable<ProductDTO>> GetLowStockAsync(int threshold)
+        {
+            var products = await _productRepository.GetLowStockAsync(threshold);
             return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
 
