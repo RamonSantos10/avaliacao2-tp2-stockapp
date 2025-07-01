@@ -21,7 +21,8 @@
             protected override void OnModelCreating(ModelBuilder builder)
             {
                 base.OnModelCreating(builder);
-                builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+                builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly); 
+                builder.Entity<Feedback>().ToTable("Feedbacks");
             }
         }
     }

@@ -24,9 +24,8 @@ namespace StockApp.Application.Services
                 FeedbackText = feedbackMessage,
                 Sentiment = sentiment
             };
-
             
-            await _feedbackRepository.SaveAsync(feedback);
+            await _feedbackRepository.SaveAsync(feedback);  
         }
     }
 }
