@@ -20,6 +20,7 @@ namespace StockApp.Domain.Interfaces
         Task<IEnumerable<Product>> GetByIdsAsync(List<int> productIds);
         Task<IEnumerable<Product>> GetLowStockAsync(int threshold);
         Task DeleteAsync(int id);
+        Task BulkUpdateAsync(List<Product> products);
 
     }
 }

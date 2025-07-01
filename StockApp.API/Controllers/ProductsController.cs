@@ -131,5 +131,45 @@ namespace StockApp.API.Controllers
             return NoContent();
         }
 
+        [HttpPut("bulk-update")]
+        public async Task<IActionResult> BulkUpdate([FromBody] List<Product> products)
+        {
+            if (products == null || products.Count == 0)
+            {
+                return BadRequest("A lista de produtos não pode estar vazia.");
+            }
+
+            // Validar se todos os produtos existem
+            foreach (var product in products)
+            {
+                if (string.IsNullOrWhiteSpace(product.Name))
+                {
+                    return BadRequest($"O nome do produto com ID {product.Id} é obrigatório.");
+                }
+
+                var existingProduct = await _productRepository.GetByIdAsync(product.Id);
+                if (existingProduct == null)
+                {
+                    return NotFound($"Produto com ID {product.Id} não encontrado.");
+                }
+
+                if (product.CategoryId > 0)
+                {
+                    var categoryExists = await _categoryRepository.GetById(product.CategoryId);
+                    if (categoryExists == null)
+                    {
+                        return BadRequest($"Categoria com ID {product.CategoryId} não existe para o produto {product.Id}.");
+                    }
+                }
+                else
+                {
+                    return BadRequest($"CategoryId é obrigatório para o produto {product.Id}.");
+                }
+            }
+
+            await _productRepository.BulkUpdateAsync(products);
+            return Ok(new { message = $"{products.Count} produtos atualizados com sucesso!" });
+        }
+
     }
 }
