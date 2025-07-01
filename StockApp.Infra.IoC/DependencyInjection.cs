@@ -38,6 +38,7 @@ namespace StockApp.Infra.IoC
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            services.AddScoped<IAnonymousFeedbackRepository, AnonymousFeedbackRepository>();
             services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ReviewService>();

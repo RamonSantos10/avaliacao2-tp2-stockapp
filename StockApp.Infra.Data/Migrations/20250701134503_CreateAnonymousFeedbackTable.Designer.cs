@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApp.Infra.Data.Context;
 
@@ -11,9 +12,10 @@ using StockApp.Infra.Data.Context;
 namespace StockApp.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250701134503_CreateAnonymousFeedbackTable")]
+    partial class CreateAnonymousFeedbackTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,9 @@ namespace StockApp.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -39,6 +44,9 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<string>("Sentiment")
                         .IsRequired()

@@ -6,12 +6,12 @@ namespace StockApp.Application.Services
 {
     public class AnonymousFeedbackService : IAnonymousFeedbackService
     {
-        private readonly IFeedbackRepository _feedbackRepository;
+        private readonly IAnonymousFeedbackRepository _anonymousFeedbackRepository;
         private readonly ISentimentAnalysisService _sentimentAnalysisService;
 
-        public AnonymousFeedbackService(IFeedbackRepository feedbackRepository, ISentimentAnalysisService sentimentAnalysisService)
+        public AnonymousFeedbackService(IAnonymousFeedbackRepository anonymousFeedbackRepository, ISentimentAnalysisService sentimentAnalysisService)
         {
-            _feedbackRepository = feedbackRepository;
+            _anonymousFeedbackRepository = anonymousFeedbackRepository;
             _sentimentAnalysisService = sentimentAnalysisService;
         }
 
@@ -20,17 +20,43 @@ namespace StockApp.Application.Services
             // Análise de sentimento do feedback anônimo
             var sentiment = _sentimentAnalysisService.AnalyzeSentiment(feedback);
 
-            // Criar feedback anônimo (sem UserId)
-            var anonymousFeedback = new Feedback
+            // Criar feedback anônimo usando a entidade específica
+            var anonymousFeedback = new AnonymousFeedback
             {
-                UserId = "ANONYMOUS", // Identificador para feedback anônimo
                 FeedbackText = feedback,
                 Sentiment = sentiment,
                 CreatedAt = DateTime.UtcNow
             };
 
-            // Salvar no repositório
-            await _feedbackRepository.SaveAsync(anonymousFeedback);
+            await _anonymousFeedbackRepository.AddAsync(anonymousFeedback);
+        }
+
+        public async Task CollectFeedbackAsync(string feedback, string? ipAddress, string? userAgent)
+        {
+            // Análise de sentimento do feedback anônimo
+            var sentiment = _sentimentAnalysisService.AnalyzeSentiment(feedback);
+
+            // Criar feedback anônimo completo
+            var anonymousFeedback = new AnonymousFeedback
+            {
+                FeedbackText = feedback,
+                Sentiment = sentiment,
+                IpAddress = ipAddress,
+                UserAgent = userAgent,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _anonymousFeedbackRepository.AddAsync(anonymousFeedback);
+        }
+
+        public async Task<IEnumerable<AnonymousFeedback>> GetAllFeedbacksAsync()
+        {
+            return await _anonymousFeedbackRepository.GetAllAsync();
+        }
+
+        public async Task<IEnumerable<AnonymousFeedback>> GetFeedbacksBySentimentAsync(string sentiment)
+        {
+            return await _anonymousFeedbackRepository.GetBySentimentAsync(sentiment);
         }
     }
 }
