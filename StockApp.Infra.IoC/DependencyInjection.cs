@@ -34,6 +34,11 @@ namespace StockApp.Infra.IoC
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IInventoryService, InventoryService>();
+            
+            // Employee and Employee Evaluation Services
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IEmployeeEvaluationRepository, EmployeeEvaluationRepository>();
+            services.AddScoped<IEmployeePerformanceEvaluationService, EmployeePerformanceEvaluationService>();
 
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 

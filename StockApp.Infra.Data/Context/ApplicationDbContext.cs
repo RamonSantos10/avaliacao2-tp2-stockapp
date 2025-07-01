@@ -20,6 +20,8 @@ namespace StockApp.Infra.Data.Context
             public DbSet<Review> Reviews { get; set; }
             public DbSet<Order> Orders { get; set; }
             public DbSet<Return> Returns { get; set; }
+            public DbSet<Employee> Employees { get; set; }
+            public DbSet<EmployeeEvaluation> EmployeeEvaluations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
             {
@@ -27,6 +29,15 @@ namespace StockApp.Infra.Data.Context
                 builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly); 
                 builder.Entity<Feedback>().ToTable("Feedbacks");
                 builder.Entity<AnonymousFeedback>().ToTable("AnonymousFeedbacks");
+                builder.Entity<Employee>().ToTable("Employees");
+                builder.Entity<EmployeeEvaluation>().ToTable("EmployeeEvaluations");
+                
+                // Configuração do relacionamento Employee -> EmployeeEvaluation
+                builder.Entity<EmployeeEvaluation>()
+                    .HasOne(e => e.Employee)
+                    .WithMany()
+                    .HasForeignKey(e => e.EmployeeId)
+                    .OnDelete(DeleteBehavior.Cascade);
             }
         }
 }
