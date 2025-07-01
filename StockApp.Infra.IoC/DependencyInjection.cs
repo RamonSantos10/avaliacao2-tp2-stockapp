@@ -42,6 +42,9 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ReviewService>();
             
+            // Anonymous Feedback Service
+            services.AddScoped<IAnonymousFeedbackService, AnonymousFeedbackService>();
+            
             // Webhook Service
             services.AddScoped<IWebhookService, WebhookService>();
             services.AddHttpClient<WebhookService>();
