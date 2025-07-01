@@ -59,7 +59,7 @@ builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
-builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ReviewService, ReviewService>();
 builder.Services.AddScoped<ICustomReportService, CustomReportService>();
 builder.Services.AddScoped<ISmsFeedbackService, SmsFeedbackService>();
 builder.Services.AddSingleton<ISmsService, FakeSmsService>();

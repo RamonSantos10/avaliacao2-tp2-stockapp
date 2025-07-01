@@ -1,13 +1,13 @@
-﻿    using Microsoft.EntityFrameworkCore;
-    using StockApp.Domain.Entities;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using StockApp.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-    namespace StockApp.Infra.Data.Context
-    {
+namespace StockApp.Infra.Data.Context
+{
         public class ApplicationDbContext : DbContext
         {
             public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
@@ -18,6 +18,7 @@
             public DbSet<Feedback> Feedbacks { get; set; }
             public DbSet<Review> Reviews { get; set; }
             public DbSet<Order> Orders { get; set; }
+            public DbSet<Return> Returns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
             {
@@ -26,4 +27,4 @@
                 builder.Entity<Feedback>().ToTable("Feedbacks");
             }
         }
-    }
+}

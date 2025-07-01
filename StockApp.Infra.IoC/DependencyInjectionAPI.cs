@@ -26,8 +26,7 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IDiscountService, DiscountService>();
-
-
+            services.AddScoped<IReturnService, ReturnService>();
             services.AddScoped<IAlertService, AlertService>();
             services.AddScoped<IJustInTimeInventoryService, JustInTimeInventoryService>();
             services.AddScoped<IInventoryService, InventoryService>();
