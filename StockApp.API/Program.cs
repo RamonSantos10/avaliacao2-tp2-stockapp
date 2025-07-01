@@ -18,6 +18,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Env.Load();
+
 // Configuração do Serilog
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -29,7 +31,7 @@ builder.Host.UseSerilog();
 // Variáveis de ambiente
 builder.Configuration.AddEnvironmentVariables();
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
 // Para ambiente de teste, usar uma connection string padrão se não estiver configurada
 if (string.IsNullOrEmpty(connectionString))
