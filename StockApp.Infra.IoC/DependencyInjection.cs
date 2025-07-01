@@ -43,6 +43,10 @@ namespace StockApp.Infra.IoC
 
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ReviewService>();
+            
+            // Webhook Service
+            services.AddScoped<IWebhookService, WebhookService>();
+            services.AddHttpClient<WebhookService>();
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
             services.AddMediatR(myhandlers);
