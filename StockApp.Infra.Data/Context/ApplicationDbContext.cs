@@ -17,8 +17,9 @@
             public virtual DbSet<Product> Products { get; set; }
             public DbSet<Feedback> Feedbacks { get; set; }
             public DbSet<Review> Reviews { get; set; }
+            public DbSet<Order> Orders { get; set; }
 
-            protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder)
             {
                 base.OnModelCreating(builder);
                 builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly); 
