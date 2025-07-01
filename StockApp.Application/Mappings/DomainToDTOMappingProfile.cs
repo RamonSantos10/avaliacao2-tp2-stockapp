@@ -16,6 +16,16 @@ namespace StockApp.Application.Mappings
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<ProductCreateDTO, Product>();
+            
+            // Employee mappings
+            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+            CreateMap<CreateEmployeeDTO, Employee>();
+            CreateMap<UpdateEmployeeDTO, Employee>();
+            
+            // Employee Evaluation mappings
+            CreateMap<EmployeeEvaluation, EmployeeEvaluationDTO>().ReverseMap();
+            CreateMap<CreateEmployeeEvaluationDTO, EmployeeEvaluation>();
+            CreateMap<UpdateEmployeeEvaluationDTO, EmployeeEvaluation>();
         }
     }
 }

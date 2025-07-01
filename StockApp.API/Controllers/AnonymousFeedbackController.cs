@@ -44,7 +44,7 @@ namespace StockApp.API.Controllers
                 {
                     Success = true,
                     Message = "Feedback anônimo coletado com sucesso!",
-                    Timestamp = DateTime.UtcNow,
+                    Timestamp = DateTime.Now,
                     SentimentAnalysis = "Análise de sentimento processada"
                 };
                 

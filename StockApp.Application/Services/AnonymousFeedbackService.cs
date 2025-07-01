@@ -25,7 +25,7 @@ namespace StockApp.Application.Services
             {
                 FeedbackText = feedback,
                 Sentiment = sentiment,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
 
             await _anonymousFeedbackRepository.AddAsync(anonymousFeedback);
@@ -43,7 +43,7 @@ namespace StockApp.Application.Services
                 Sentiment = sentiment,
                 IpAddress = ipAddress,
                 UserAgent = userAgent,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
 
             await _anonymousFeedbackRepository.AddAsync(anonymousFeedback);
