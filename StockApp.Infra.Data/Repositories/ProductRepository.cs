@@ -149,5 +149,30 @@ namespace StockApp.Infra.Data.Repositories
                 await _productContext.SaveChangesAsync();
             }
         }
+
+        public async Task BulkUpdateAsync(List<Product> products)
+        {
+            foreach (var product in products)
+            {
+                var existingEntity = _productContext.Products.Local.FirstOrDefault(p => p.Id == product.Id);
+
+                if (existingEntity != null)
+                {
+                    _productContext.Entry(existingEntity).CurrentValues.SetValues(product);
+                }
+                else
+                {
+                    _productContext.Attach(product);
+                    _productContext.Entry(product).State = EntityState.Modified;
+                }
+
+                if (product.Category != null)
+                {
+                    _productContext.Entry(product.Category).State = EntityState.Unchanged;
+                }
+            }
+
+            await _productContext.SaveChangesAsync();
+        }
     }
 }
