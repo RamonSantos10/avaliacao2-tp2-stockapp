@@ -15,7 +15,12 @@ namespace StockApp.Application.Services
         public BackupService(IConfiguration configuration, ILogger<BackupService> logger)
         {
             _backupPath = configuration["BackupPath"] ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "StockAppBackups");
-            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentNullException("ConnectionString não encontrada");
+            
+            // Usar a mesma lógica do Program.cs para obter a connection string
+            _connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") 
+                ?? configuration.GetConnectionString("DefaultConnection") 
+                ?? throw new ArgumentNullException("ConnectionString não encontrada nem em variável de ambiente nem em appsettings.json");
+            
             _logger = logger;
             _databaseName = ExtractDatabaseName(_connectionString);
             
