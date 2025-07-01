@@ -38,9 +38,13 @@ namespace StockApp.Infra.IoC
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            services.AddScoped<IAnonymousFeedbackRepository, AnonymousFeedbackRepository>();
             services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ReviewService>();
+            
+            // Anonymous Feedback Service
+            services.AddScoped<IAnonymousFeedbackService, AnonymousFeedbackService>();
             
             // Webhook Service
             services.AddScoped<IWebhookService, WebhookService>();
