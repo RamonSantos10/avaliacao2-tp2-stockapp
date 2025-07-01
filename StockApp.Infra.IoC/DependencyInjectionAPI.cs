@@ -30,6 +30,7 @@ namespace StockApp.Infra.IoC
             services.AddScoped<IAlertService, AlertService>();
             services.AddScoped<IJustInTimeInventoryService, JustInTimeInventoryService>();
             services.AddScoped<IInventoryService, InventoryService>();
+            services.AddScoped<ISalesPredictionService, SalesPredictionService>();
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             var myhandlers = AppDomain.CurrentDomain.Load("StockApp.Application");
