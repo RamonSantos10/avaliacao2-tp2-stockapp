@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using DotNetEnv;
 
 
 namespace StockApp.Infra.Data.Context
@@ -10,7 +11,7 @@ namespace StockApp.Infra.Data.Context
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-
+            Env.Load();
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var basePath = Directory.GetCurrentDirectory();
 
@@ -19,7 +20,7 @@ namespace StockApp.Infra.Data.Context
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
             optionsBuilder.UseSqlServer(connectionString);
 
