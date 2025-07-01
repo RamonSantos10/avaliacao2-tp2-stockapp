@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AspNetCoreRateLimit;
+using Microsoft.EntityFrameworkCore;
 
 DotNetEnv.Env.Load();
 
@@ -31,10 +32,18 @@ builder.Configuration.AddEnvironmentVariables();
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Para ambiente de teste, usar uma connection string padrão se não estiver configurada
 if (string.IsNullOrEmpty(connectionString))
 {
-    Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' não foi encontrada. Verifique appsettings.json ou .env.");
-    throw new InvalidOperationException("ConnectionString 'DefaultConnection' não configurada.");
+    if (builder.Environment.EnvironmentName == "Testing")
+    {
+        connectionString = "Data Source=:memory:";
+    }
+    else
+    {
+        Console.WriteLine("ERRO: A ConnectionString 'DefaultConnection' não foi encontrada. Verifique appsettings.json ou .env.");
+        throw new InvalidOperationException("ConnectionString 'DefaultConnection' não configurada.");
+    }
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

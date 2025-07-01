@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using StockApp.Domain.Interfaces;
 using StockApp.Domain.Entities;
 using StockApp.Application.DTOs;
@@ -23,6 +24,17 @@ namespace StockApp.API.Controllers
         {
             try
             {
+                // Validação de entrada
+                if (string.IsNullOrEmpty(userRegisterDto.Username))
+                {
+                    return BadRequest("Username is required");
+                }
+
+                if (string.IsNullOrEmpty(userRegisterDto.Password))
+                {
+                    return BadRequest("Password is required");
+                }
+
                 var existingUser = await _userRepository.GetByUsernameAsync(userRegisterDto.Username);
                 if (existingUser != null)
                 {
