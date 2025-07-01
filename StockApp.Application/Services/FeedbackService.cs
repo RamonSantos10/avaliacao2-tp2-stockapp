@@ -22,7 +22,8 @@ namespace StockApp.Application.Services
             {
                 UserId = userId,
                 FeedbackText = feedbackMessage,
-                Sentiment = sentiment
+                Sentiment = sentiment,
+                CreatedAt = DateTime.Now
             };
             
             await _feedbackRepository.SaveAsync(feedback);  
